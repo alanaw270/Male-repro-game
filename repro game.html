@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission: Create a Healthy Pregnancy</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@400..700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f0f7f7;
+        }
+        
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Pulsing & animations */
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .pulse-btn {
+            animation: gentle-pulse 2s infinite ease-in-out;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e6f2f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a3d5d3;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #76bebc;
+        }
+
+        /* Active dragging classes */
+        .dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        
+        .drop-target-active {
+            border-color: #475569 !important;
+            background-color: #f1f5f9 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 selection:bg-teal-200">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white border-b-4 border-teal-500 shadow-sm sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-teal-100 p-2 rounded-2xl border-2 border-teal-400 text-teal-600 animate-bounce">
+                    <i data-lucide="baby" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-teal-700 tracking-wide">Mission: Create a Healthy Pregnancy</h1>
+                    <p class="text-xs text-teal-600 font-medium tracking-wider uppercase">NUR1114 Bioscience Nursing Interactive</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Sound Toggle -->
+                <button id="sound-toggle" onclick="toggleMute()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 transition-all flex items-center gap-2" title="Toggle Sound">
+                    <i id="sound-icon" data-lucide="volume-2" class="w-5 h-5 text-slate-600"></i>
+                    <span class="text-xs font-semibold hidden md:inline text-slate-600">Sound FX</span>
+                </button>
+                
+                <!-- Progress Tracker -->
+                <div class="bg-teal-50 border-2 border-teal-200 rounded-2xl px-4 py-2 flex items-center gap-3 shadow-inner">
+                    <span class="text-xs font-bold text-teal-800 uppercase tracking-wide">Mission 1 Progress:</span>
+                    <div class="flex gap-1.5" id="progress-dots">
+                        <span id="dot-1" class="w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-400 transition-all duration-300"></span>
+                        <span id="dot-2" class="w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-400 transition-all duration-300"></span>
+                        <span id="dot-3" class="w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-400 transition-all duration-300"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Stage Manager -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center items-center">
+        
+        <!-- Welcome Screen -->
+        <section id="screen-welcome" class="w-full max-w-3xl bg-white rounded-3xl border-4 border-teal-500 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6 transition-all transform duration-300">
+            <div class="text-center space-y-4">
+                <div class="inline-block bg-teal-50 p-4 rounded-3xl border-2 border-teal-300 mb-2">
+                    <svg class="w-24 h-24 mx-auto text-teal-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Custom animated clinic flask & sperm -->
+                        <rect x="35" y="10" width="30" height="15" rx="5" stroke="currentColor" stroke-width="6" fill="#CCFBEC"/>
+                        <path d="M40 25 L30 65 A 20 20 0 1 0 70 65 L60 25 Z" stroke="currentColor" stroke-width="6" fill="#E6FFFA"/>
+                        <!-- Bubbles inside -->
+                        <circle cx="50" cy="50" r="4" fill="#0D9488" class="animate-ping"/>
+                        <circle cx="42" cy="65" r="3" fill="#0D9488"/>
+                        <circle cx="58" cy="60" r="5" fill="#0D9488"/>
+                        <!-- Little sperm swimming -->
+                        <path d="M50 78 C 45 76, 42 80, 36 78 C 30 76, 28 82, 22 80" stroke="#0D9488" stroke-width="3" stroke-linecap="round" class="animate-pulse"/>
+                        <circle cx="52" cy="78" r="4" fill="#0D9488"/>
+                    </svg>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-800 tracking-wide">Mission 1: Build a Sperm & Semen Sample</h2>
+                <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto">
+                    Welcome to the <strong>Fertility Science Lab!</strong> Before ejaculation can occur under sympathetic nervous control, you must synthesize a perfectly balanced, hyper-motile semen sample. 
+                </p>
+            </div>
+
+            <!-- Learning Objective Info Badge -->
+            <div class="bg-teal-50 border-l-4 border-teal-500 rounded-r-xl p-4 space-y-1">
+                <div class="flex items-center gap-2 text-teal-800 font-bold">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span>NUR1114 Learning Goals Anchor</span>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    By completing this mission, you will master the hypothalamic-pituitary-gonadal (HPG) hormonal axis, map the pathway of sperm through the male reproductive ducts, and calculate the exact chemical contributions of the accessory glands required for sperm viability and motility.
+                </p>
+            </div>
+
+            <div class="flex justify-center">
+                <button onclick="changeScreen('screen-p1')" class="pulse-btn px-8 py-4 bg-teal-500 hover:bg-teal-600 active:translate-y-0.5 text-white font-bold text-xl rounded-2xl shadow-lg hover:shadow-xl transition-all border-b-4 border-teal-700 flex items-center gap-3">
+                    <span>Enter Fertility Clinic</span>
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PUZZLE 1: Sperm Factory Assembly Line (Hormones) -->
+        <section id="screen-p1" class="hidden w-full max-w-5xl bg-white rounded-3xl border-4 border-slate-600 shadow-xl overflow-hidden flex flex-col transition-all">
+            <!-- Header bar for Stage -->
+            <div class="bg-slate-700 text-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="bg-white text-slate-700 font-bold text-sm px-2.5 py-1 rounded-full uppercase tracking-wider">Part 1</span>
+                    <h3 class="text-xl font-bold tracking-wide">The "Sperm Factory" HPG Axis Assembly</h3>
+                </div>
+                <span class="text-sm font-semibold text-slate-300 flex items-center gap-1">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Map out the physiological cascade.
+                </span>
+            </div>
+
+            <!-- Hybrid DND instructions -->
+            <div class="bg-slate-50 px-6 py-2 border-b text-xs text-slate-800 flex items-center gap-2">
+                <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
+                <span><strong>Interactive Challenge:</strong> Match each cell or hormone name to its exact functional definition inside the HPG schematic. Clues are hidden!</span>
+            </div>
+
+            <div class="p-4 sm:p-6 flex flex-col lg:flex-row gap-6">
+                <!-- Left Column: Interactive Schematic (The Assembly Line Flow) -->
+                <div class="flex-1 bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 flex flex-col items-center justify-between min-h-[420px]">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Hypothalamic-Pituitary-Gonadal (HPG) Axis</h4>
+                    
+                    <div class="w-full space-y-4 max-w-md">
+                        <!-- Level 1: Hypothalamus -->
+                        <div class="bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center relative shadow-sm">
+                            <div class="absolute -top-2.5 left-4 bg-slate-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">Hypothalamus</div>
+                            <p class="text-xs text-slate-500 font-semibold text-center mt-2 px-1">released from the hypothalamus; stimulates the anterior pituitary</p>
+                            <!-- Dropzone for GnRH -->
+                            <div class="w-full dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all mt-2 relative" data-target="GnRH">
+                                <span class="text-xs text-slate-400 italic pointer-events-none">[Place matching label here]</span>
+                            </div>
+                        </div>
+
+                        <!-- Downward arrow 1 -->
+                        <div class="flex justify-center text-slate-400">
+                            <i data-lucide="arrow-down-circle" class="w-6 h-6"></i>
+                        </div>
+
+                        <!-- Level 2: Anterior Pituitary -->
+                        <div class="bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center relative shadow-sm">
+                            <div class="absolute -top-2.5 left-4 bg-slate-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">Anterior Pituitary</div>
+                            <div class="h-1"></div>
+                            
+                            <div class="grid grid-cols-2 gap-3 w-full mt-2">
+                                <!-- FSH Slot Box -->
+                                <div class="bg-slate-50/50 p-2 border rounded-lg flex flex-col justify-between">
+                                    <p class="text-[10px] text-slate-500 font-semibold text-center leading-tight mb-2">released from the anterior pituitary; stimulates Sertoli cells</p>
+                                    <!-- Dropzone for FSH -->
+                                    <div class="dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-white transition-all p-1 relative" data-target="FSH">
+                                        <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                    </div>
+                                </div>
+                                <!-- LH Slot Box -->
+                                <div class="bg-slate-50/50 p-2 border rounded-lg flex flex-col justify-between">
+                                    <p class="text-[10px] text-slate-500 font-semibold text-center leading-tight mb-2">released from the anterior pituitary; stimulates Leydig cells</p>
+                                    <!-- Dropzone for LH -->
+                                    <div class="dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-white transition-all p-1 relative" data-target="LH">
+                                        <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Split Arrow downwards -->
+                        <div class="grid grid-cols-2 text-slate-400">
+                            <div class="flex justify-center"><i data-lucide="arrow-down-right" class="w-5 h-5"></i></div>
+                            <div class="flex justify-center"><i data-lucide="arrow-down-left" class="w-5 h-5"></i></div>
+                        </div>
+
+                        <!-- Level 3: Testicular Target Cells -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Left: Sertoli Cell Box -->
+                            <div class="bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center relative shadow-sm">
+                                <div class="absolute -top-2.5 left-2 bg-slate-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase">Testis Unit A</div>
+                                <p class="text-[10px] text-slate-500 font-semibold text-center mt-2 mb-1 leading-tight">secretes androgen-binding protein (ABP)</p>
+                                <!-- Dropzone for Sertoli Cell -->
+                                <div class="w-full dropzone h-12 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all p-1 relative" data-target="Sertoli">
+                                    <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                </div>
+                                <div class="h-3 border-l border-dashed border-slate-300 my-1 w-full"></div>
+                                <p class="text-[10px] text-slate-500 font-semibold text-center leading-tight mb-1">keeps local testosterone concentrations high</p>
+                                <!-- Dropzone for ABP -->
+                                <div class="w-full dropzone h-12 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all p-1 relative" data-target="ABP">
+                                    <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                </div>
+                            </div>
+
+                            <!-- Right: Leydig Cell Box -->
+                            <div class="bg-white border-2 border-slate-200 rounded-xl p-3 flex flex-col items-center relative shadow-sm">
+                                <div class="absolute -top-2.5 left-2 bg-slate-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase">Testis Unit B</div>
+                                <p class="text-[10px] text-slate-500 font-semibold text-center mt-2 mb-1 leading-tight">secrete testosterone</p>
+                                <!-- Dropzone for Leydig -->
+                                <div class="w-full dropzone h-12 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all p-1 relative" data-target="Leydig">
+                                    <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                </div>
+                                <div class="h-3 border-l border-dashed border-slate-300 my-1 w-full"></div>
+                                <p class="text-[10px] text-slate-500 font-semibold text-center leading-tight mb-1">stimulates spermatogenesis</p>
+                                <!-- Dropzone for Testosterone -->
+                                <div class="w-full dropzone h-12 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all p-1 relative" data-target="Testosterone">
+                                    <span class="text-[10px] text-center text-slate-400 italic pointer-events-none">[Label]</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right Column: Name Card Pool (No color indicators) -->
+                <div class="w-full lg:w-96 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-700 text-sm">Anatomy / Hormone Labels</h4>
+                            <span class="text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">Select, then tap slot</span>
+                        </div>
+                        
+                        <!-- Cards Container -->
+                        <div id="p1-cards" class="grid grid-cols-1 gap-2 max-h-[450px] overflow-y-auto pr-1">
+                            <!-- GnRH -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="GnRH">
+                                <i data-lucide="layers" class="w-4 h-4 text-slate-500"></i>
+                                <span>GnRH</span>
+                            </div>
+                            <!-- FSH -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="FSH">
+                                <i data-lucide="layers" class="w-4 h-4 text-slate-500"></i>
+                                <span>FSH</span>
+                            </div>
+                            <!-- LH -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="LH">
+                                <i data-lucide="layers" class="w-4 h-4 text-slate-500"></i>
+                                <span>LH</span>
+                            </div>
+                            <!-- Sertoli Cell -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="Sertoli">
+                                <i data-lucide="pocket" class="w-4 h-4 text-slate-500"></i>
+                                <span>Sertoli cell</span>
+                            </div>
+                            <!-- Leydig Cell -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="Leydig">
+                                <i data-lucide="pocket" class="w-4 h-4 text-slate-500"></i>
+                                <span>Leydig cell</span>
+                            </div>
+                            <!-- ABP -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="ABP">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-slate-500"></i>
+                                <span>Androgen-binding protein (ABP)</span>
+                            </div>
+                            <!-- Testosterone -->
+                            <div class="card p-3 bg-white hover:bg-slate-50 border-2 border-slate-300 rounded-xl cursor-grab active:cursor-grabbing transition-all text-xs font-bold flex items-center gap-2 shadow-sm" draggable="true" data-id="Testosterone">
+                                <i data-lucide="flame" class="w-4 h-4 text-slate-500"></i>
+                                <span>Testosterone</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer bar for feedback / progress -->
+            <div class="bg-slate-50 border-t border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <span id="p1-status" class="text-sm font-semibold text-slate-500">
+                    Arrange all 7 labels to activate the pituitary feedback cascade.
+                </span>
+                <div class="flex gap-2">
+                    <button id="p1-reset-btn" onclick="resetPuzzle1()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 font-bold rounded-xl text-slate-700 transition text-sm">Reset Stage</button>
+                    <button id="p1-next-btn" disabled onclick="completeStage1()" class="px-6 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl transition cursor-not-allowed text-sm flex items-center gap-2">
+                        <span>Check & Progress</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUZZLE 2: The Sperm's Journey -->
+        <section id="screen-p2" class="hidden w-full max-w-5xl bg-white rounded-3xl border-4 border-indigo-400 shadow-xl overflow-hidden flex flex-col transition-all">
+            <!-- Header bar for Stage -->
+            <div class="bg-indigo-400 text-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="bg-white text-indigo-600 font-bold text-sm px-2.5 py-1 rounded-full uppercase tracking-wider">Part 2</span>
+                    <h3 class="text-xl font-bold tracking-wide">The Sperm's Physical Journey</h3>
+                </div>
+                <span class="text-sm font-semibold text-indigo-100 flex items-center gap-1">
+                    <i data-lucide="route" class="w-4 h-4"></i> Master the anatomical pathways & glands!
+                </span>
+            </div>
+
+            <!-- Hybrid DND instructions -->
+            <div class="bg-indigo-50 px-6 py-2 border-b text-xs text-indigo-800 flex items-center gap-2">
+                <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
+                <span><strong>Interactive Tip:</strong> Select a structure from the left bank, then tap its matching physiological definition on the right.</span>
+            </div>
+
+            <div class="p-4 sm:p-6 flex flex-col lg:flex-row gap-6">
+                <!-- Left: Labeled Path Cards (Origin to Exit) -->
+                <div class="w-full lg:w-80 flex flex-col gap-2 bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 text-center">Structure Bank</h4>
+                    <div id="p2-structures" class="flex flex-col gap-2">
+                        <!-- Items populated by JS dynamically -->
+                    </div>
+                </div>
+
+                <!-- Right: Description Slots (Pathway Order) -->
+                <div class="flex-grow flex flex-col gap-3">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest text-center lg:text-left">Match to Function/Anatomy</h4>
+                    
+                    <div id="p2-slots" class="flex flex-col gap-3">
+                        <!-- Slots generated dynamically with data attributes -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer bar for feedback / progress -->
+            <div class="bg-slate-50 border-t border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <!-- Back Option -->
+                    <button onclick="changeScreen('screen-p1')" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 border-2 border-indigo-300 text-indigo-700 font-bold rounded-xl transition text-sm flex items-center gap-1.5">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        <span>Back to Part 1</span>
+                    </button>
+                    <span id="p2-status" class="text-sm font-semibold text-indigo-700">
+                        Match all 7 structures to unlock physical ejaculation pathway.
+                    </span>
+                </div>
+                <div class="flex gap-2">
+                    <button id="p2-reset-btn" onclick="resetPuzzle2()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 font-bold rounded-xl text-slate-700 transition text-sm">Reset</button>
+                    <button id="p2-next-btn" disabled onclick="completeStage2()" class="px-6 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl transition cursor-not-allowed text-sm flex items-center gap-2">
+                        <span>Check Pathway</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUZZLE 3: Semen Cocktail Blender -->
+        <section id="screen-p3" class="hidden w-full max-w-5xl bg-white rounded-3xl border-4 border-emerald-400 shadow-xl overflow-hidden flex flex-col transition-all">
+            <!-- Header bar for Stage -->
+            <div class="bg-emerald-400 text-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="bg-white text-emerald-600 font-bold text-sm px-2.5 py-1 rounded-full uppercase tracking-wider">Part 3</span>
+                    <h3 class="text-xl font-bold tracking-wide">The Semen Cocktail Blender</h3>
+                </div>
+                <span class="text-sm font-semibold text-emerald-100 flex items-center gap-1">
+                    <i data-lucide="beaker" class="w-4 h-4 animate-spin"></i> Mix the ultimate 100% volume cocktail!
+                </span>
+            </div>
+
+            <div class="p-4 sm:p-6 flex flex-col lg:flex-row gap-6">
+                <!-- Left: Slider Controls -->
+                <div class="flex-grow space-y-6">
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-lg text-emerald-800">Adjust the Glandular Percentages</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            For a normal semen sample, sperm from the epididymis is blended with alkaline and enzyme-rich fluids. Adjust each slider to match ideal physiological volumes.
+                        </p>
+                    </div>
+
+                    <!-- Sliders Interface -->
+                    <div class="space-y-4">
+                        <!-- Seminal Vesicles (Target: 60%) -->
+                        <div class="bg-amber-50/50 border border-amber-200 rounded-xl p-3 sm:p-4 relative">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs sm:text-sm font-bold text-amber-800 uppercase flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Seminal Vesicles
+                                </label>
+                                <span class="text-sm font-black text-amber-900 bg-white px-2 py-0.5 rounded shadow-sm border border-amber-300" id="val-sv">0%</span>
+                            </div>
+                            <input type="range" id="slider-sv" min="0" max="100" value="0" step="5" class="w-full accent-amber-500 h-2 bg-amber-200 rounded-lg cursor-pointer" oninput="updateBlender()">
+                            <div class="mt-2 flex flex-wrap gap-1" id="unlocks-sv">
+                                <span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Fructose Sugar, Prostaglandins, Fibrinogen</span>
+                            </div>
+                        </div>
+
+                        <!-- Prostate Gland (Target: 30%) -->
+                        <div class="bg-indigo-50/50 border border-indigo-200 rounded-xl p-3 sm:p-4 relative">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs sm:text-sm font-bold text-indigo-800 uppercase flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> Prostate Gland
+                                </label>
+                                <span class="text-sm font-black text-indigo-900 bg-white px-2 py-0.5 rounded shadow-sm border border-indigo-300" id="val-prostate">0%</span>
+                            </div>
+                            <input type="range" id="slider-prostate" min="0" max="100" value="0" step="5" class="w-full accent-indigo-500 h-2 bg-indigo-200 rounded-lg cursor-pointer" oninput="updateBlender()">
+                            <div class="mt-2 flex flex-wrap gap-1" id="unlocks-prostate">
+                                <span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Citric Acid, Proteolytic Enzymes</span>
+                            </div>
+                        </div>
+
+                        <!-- Bulbourethral Gland (Target: 5%) -->
+                        <div class="bg-teal-50/50 border border-teal-200 rounded-xl p-3 sm:p-4 relative">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs sm:text-sm font-bold text-teal-800 uppercase flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span> Bulbourethral Gland
+                                </label>
+                                <span class="text-sm font-black text-teal-900 bg-white px-2 py-0.5 rounded shadow-sm border border-teal-300" id="val-bulbo">0%</span>
+                            </div>
+                            <input type="range" id="slider-bulbo" min="0" max="100" value="0" step="5" class="w-full accent-teal-500 h-2 bg-teal-200 rounded-lg cursor-pointer" oninput="updateBlender()">
+                            <div class="mt-2 flex flex-wrap gap-1" id="unlocks-bulbo">
+                                <span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Mucus Lubrication & Acid Neutralizer</span>
+                            </div>
+                        </div>
+
+                        <!-- Epididymis / Sperm (Target: 5%) -->
+                        <div class="bg-rose-50/50 border border-rose-200 rounded-xl p-3 sm:p-4 relative">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs sm:text-sm font-bold text-rose-800 uppercase flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> Epididymis (Sperm)
+                                </label>
+                                <span class="text-sm font-black text-rose-900 bg-white px-2 py-0.5 rounded shadow-sm border border-rose-300" id="val-epidid">0%</span>
+                            </div>
+                            <input type="range" id="slider-epidid" min="0" max="100" value="0" step="5" class="w-full accent-rose-500 h-2 bg-rose-200 rounded-lg cursor-pointer" oninput="updateBlender()">
+                            <div class="mt-2 flex flex-wrap gap-1" id="unlocks-epidid">
+                                <span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Viable Sperm Cells</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Visualization Flask & Metrics -->
+                <div class="w-full lg:w-80 flex flex-col gap-4">
+                    <!-- The Blender Flask UI representation -->
+                    <div class="bg-slate-900 text-white rounded-3xl p-5 flex flex-col items-center relative overflow-hidden h-[340px] shadow-2xl border-4 border-slate-700">
+                        <div class="absolute top-2 left-2 flex items-center gap-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-[9px] uppercase tracking-wider font-semibold text-emerald-400">Blender Active</span>
+                        </div>
+                        
+                        <!-- Flask Body graphic -->
+                        <div class="w-32 h-60 border-4 border-slate-500 rounded-b-3xl rounded-t-xl relative mt-4 flex flex-col justify-end overflow-hidden bg-slate-950 shadow-inner">
+                            <!-- Marks on flask -->
+                            <div class="absolute left-2 top-4 w-4 h-0.5 bg-slate-700"></div><span class="absolute left-8 top-3 text-[9px] text-slate-600">100%</span>
+                            <div class="absolute left-2 top-12 w-3 h-0.5 bg-slate-700"></div>
+                            <div class="absolute left-2 top-20 w-4 h-0.5 bg-slate-700"></div><span class="absolute left-8 top-19 text-[9px] text-slate-600">75%</span>
+                            <div class="absolute left-2 top-28 w-3 h-0.5 bg-slate-700"></div>
+                            <div class="absolute left-2 top-36 w-4 h-0.5 bg-slate-700"></div><span class="absolute left-8 top-35 text-[9px] text-slate-600">50%</span>
+                            <div class="absolute left-2 top-44 w-3 h-0.5 bg-slate-700"></div>
+                            <div class="absolute left-2 top-52 w-4 h-0.5 bg-slate-700"></div><span class="absolute left-8 top-51 text-[9px] text-slate-600">25%</span>
+                            
+                            <!-- SV Fluid Level -->
+                            <div id="fluid-sv" class="bg-amber-400/80 transition-all duration-300 w-full" style="height: 0%"></div>
+                            <!-- Prostate Fluid Level -->
+                            <div id="fluid-prostate" class="bg-indigo-400/80 transition-all duration-300 w-full" style="height: 0%"></div>
+                            <!-- Bulbourethral Fluid Level -->
+                            <div id="fluid-bulbo" class="bg-teal-400/80 transition-all duration-300 w-full" style="height: 0%"></div>
+                            <!-- Epididymis Fluid Level -->
+                            <div id="fluid-epidid" class="bg-rose-400/80 transition-all duration-300 w-full" style="height: 0%"></div>
+                        </div>
+
+                        <!-- Current Aggregate Total -->
+                        <div class="mt-3 text-center">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Total Ejaculate Volume</span>
+                            <div class="text-2xl font-black" id="total-vol-display">0% / 100%</div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnostics & Warnings Panel -->
+                    <div id="blender-diagnostic" class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4 text-xs space-y-1">
+                        <span class="font-bold text-emerald-800 flex items-center gap-1">
+                            <i data-lucide="activity" class="w-4 h-4"></i> Real-time Chemical Analysis
+                        </span>
+                        <p class="text-[11px] text-slate-600 leading-normal" id="diagnostic-text">
+                            Move the sliders to allocate the appropriate fluids to build the optimal 100% chemical cocktail!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer controls -->
+            <div class="bg-slate-50 border-t border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <!-- Back Option -->
+                    <button onclick="changeScreen('screen-p2')" class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-700 font-bold rounded-xl transition text-sm flex items-center gap-1.5">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        <span>Back to Part 2</span>
+                    </button>
+                    <span id="p3-status" class="text-sm font-semibold text-emerald-700">
+                        Formula must equal exactly 100% and use real physiological components.
+                    </span>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="resetPuzzle3()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 font-bold rounded-xl text-slate-700 transition text-sm">Reset Slider Ratios</button>
+                    <button onclick="testCocktail()" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 active:translate-y-0.5 text-white font-bold rounded-xl shadow transition text-sm flex items-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                        <span>Blend & Analyze Semen</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION UNLOCKED SUCCESS SCREEN -->
+        <section id="screen-unlocked" class="hidden w-full max-w-4xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-3xl border-4 border-teal-300 shadow-2xl p-6 sm:p-10 space-y-6 relative overflow-hidden transition-all duration-500">
+            <!-- Confetti abstract background using simple SVGs -->
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="none"/>
+                    <circle cx="50" cy="50" r="10" fill="white"/>
+                    <circle cx="150" cy="80" r="15" fill="white"/>
+                    <circle cx="350" cy="40" r="8" fill="white"/>
+                    <circle cx="280" cy="180" r="12" fill="white"/>
+                    <path d="M 50 150 Q 80 180, 50 200" stroke="white" stroke-width="4" fill="none"/>
+                    <path d="M 400 120 Q 420 100, 440 130" stroke="white" stroke-width="4" fill="none"/>
+                </svg>
+            </div>
+
+            <div class="text-center space-y-4 relative z-10">
+                <div class="inline-block bg-white text-teal-600 p-5 rounded-full border-4 border-teal-200 animate-pulse">
+                    <i data-lucide="party-popper" class="w-16 h-16"></i>
+                </div>
+                <h2 class="text-4xl font-extrabold tracking-wide">MISSION 1 COMPLETE!</h2>
+                <p class="text-lg text-teal-100 max-w-2xl mx-auto">
+                    The semen sample is chemically optimized, loaded with hyper-motile spermatozoa, and successfully prepared for release under autonomic pathways!
+                </p>
+            </div>
+
+            <!-- Physiological Summary of Success -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 space-y-4 border border-white/20">
+                <h3 class="font-bold text-lg text-teal-200 border-b border-white/20 pb-2">Physiological Summary</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <!-- Axis Card -->
+                    <div class="bg-teal-950/30 rounded-xl p-3 border border-teal-300/20">
+                        <span class="font-extrabold text-teal-200 block mb-1">1. HPG Axis Active</span>
+                        <p class="text-xs text-slate-100 leading-relaxed">
+                            Hypothalamic <strong>GnRH</strong> successfully stimulated gonadotropes to release <strong>FSH & LH</strong>, causing <strong>Sertoli</strong> cells to secrete <strong>ABP</strong> and <strong>Leydig</strong> cells to pump local <strong>Testosterone</strong> for high-rate spermatogenesis.
+                        </p>
+                    </div>
+                    <!-- Path Card -->
+                    <div class="bg-teal-950/30 rounded-xl p-3 border border-teal-300/20">
+                        <span class="font-extrabold text-teal-200 block mb-1">2. Intact Transit Pathway</span>
+                        <p class="text-xs text-slate-100 leading-relaxed">
+                            Mature sperm left the <strong>epididymis</strong>, transited the <strong>vas deferens</strong>, mixed with secretions inside the <strong>ejaculatory duct</strong>, and entered the <strong>urethra</strong>.
+                        </p>
+                    </div>
+                    <!-- Chemical Card -->
+                    <div class="bg-teal-950/30 rounded-xl p-3 border border-teal-300/20">
+                        <span class="font-extrabold text-teal-200 block mb-1">3. Semen Cocktail Balanced</span>
+                        <p class="text-xs text-slate-100 leading-relaxed">
+                            Alkaline fructose sugar (60% SV) supplies critical ATP fuel. Citrate & clotting enzymes (30% Prostate) liquefy the ejaculate plug. Bulbourethral mucus (5%) successfully neutralized acidic urethra tracts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejaculatory Autonomic Pathways Clinical Insight -->
+            <div class="bg-teal-950/40 border border-teal-300/30 rounded-2xl p-4 text-xs space-y-2">
+                <span class="font-bold text-yellow-300 flex items-center gap-1">
+                    <i data-lucide="shield-alert" class="w-4.5 h-4.5"></i> Autonomic Control Nursing Checklist
+                </span>
+                <p class="leading-relaxed text-slate-100">
+                    <strong>Point and Shoot Rule:</strong> Erection is facilitated by parasympathetic pathways (nitric oxide vasodilation), but <strong>ejaculation is initiated by sympathetic nervous system pathways (L1-L2)</strong> coordinating smooth muscle contraction of ducts and closing of the internal urethral bladder sphincter. Retrograde ejaculation occurs if this sympathetic bladder sphincter mechanism fails!
+                </p>
+            </div>
+
+            <!-- Navigation Button to next part of lecture -->
+            <div class="flex justify-center pt-2">
+                <button onclick="restartGame()" class="px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-teal-950 font-bold text-lg rounded-2xl shadow-lg border-b-4 border-yellow-600 transition flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    <span>Replay Mission 1 Demo</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Error/Notice Custom Modal (Replaces standard window.alert) -->
+    <div id="custom-modal" class="hidden fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl border-4 border-rose-500 shadow-2xl max-w-md w-full p-6 space-y-4 transform scale-95 transition-all">
+            <div class="flex items-center gap-3 text-rose-600">
+                <div class="bg-rose-100 p-2.5 rounded-2xl border border-rose-300">
+                    <i id="modal-icon" data-lucide="alert-triangle" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h3 id="modal-title" class="text-xl font-bold tracking-wide text-rose-800">Critical Error!</h3>
+                    <p class="text-xs text-rose-500 font-semibold tracking-wider uppercase">Semen Cocktail Synthesis Failed</p>
+                </div>
+            </div>
+            
+            <p id="modal-text" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 border rounded-2xl shadow-inner">
+                Sperm ran out of ATP energy in the epididymis! Reset blender parameters.
+            </p>
+
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal()" class="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl transition text-sm shadow">
+                    Recalibrate Blender
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moodle Footer Meta Info -->
+    <footer class="bg-slate-100 border-t border-slate-200 px-4 py-3 text-center text-xs text-slate-500">
+        <p>© 2026 Monash University NUR1114 Bioscience Integration • Dynamic Lesson Module</p>
+    </footer>
+
+    <!-- Game Logic Scripts -->
+    <script>
+        // Audio Synth Engine (Web Audio API for Game FX)
+        let isMuted = false;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'success') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.3); // C6
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'match') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.setAttribute('data-lucide', 'volume-x');
+                document.getElementById('sound-toggle').classList.add('bg-slate-300');
+            } else {
+                icon.setAttribute('data-lucide', 'volume-2');
+                document.getElementById('sound-toggle').classList.remove('bg-slate-300');
+                playSound('click');
+            }
+            lucide.createIcons();
+        }
+
+        // SCREEN NAVIGATOR
+        function changeScreen(screenId) {
+            playSound('click');
+            
+            // Hide all screens
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-p1').classList.add('hidden');
+            document.getElementById('screen-p2').classList.add('hidden');
+            document.getElementById('screen-p3').classList.add('hidden');
+            document.getElementById('screen-unlocked').classList.add('hidden');
+
+            // Show selected screen
+            const targetScreen = document.getElementById(screenId);
+            targetScreen.classList.remove('hidden');
+
+            // Set progress dot highlights
+            const dots = ['dot-1', 'dot-2', 'dot-3'];
+            dots.forEach((dotId, index) => {
+                const dot = document.getElementById(dotId);
+                dot.className = "w-3.5 h-3.5 rounded-full border transition-all duration-300 ";
+                
+                if (screenId === 'screen-welcome') {
+                    dot.className += "bg-slate-300 border-slate-400";
+                } else if (screenId === 'screen-p1') {
+                    if (index === 0) dot.className += "bg-slate-600 border-slate-700 scale-125 shadow-md";
+                    else dot.className += "bg-slate-300 border-slate-400";
+                } else if (screenId === 'screen-p2') {
+                    if (index <= 1) dot.className += "bg-indigo-500 border-indigo-600" + (index === 1 ? " scale-125 shadow-md" : "");
+                    else dot.className += "bg-slate-300 border-slate-400";
+                } else if (screenId === 'screen-p3' || screenId === 'screen-unlocked') {
+                    dot.className += "bg-emerald-500 border-emerald-600" + (index === 2 ? " scale-125 shadow-md" : "");
+                }
+            });
+        }
+
+        // CUSTOM MODAL HANDLING
+        function showModal(title, text, isFail = true) {
+            playSound(isFail ? 'fail' : 'success');
+            const modal = document.getElementById('custom-modal');
+            const mTitle = document.getElementById('modal-title');
+            const mText = document.getElementById('modal-text');
+            const mIcon = document.getElementById('modal-icon');
+            
+            mTitle.textContent = title;
+            mText.innerHTML = text;
+
+            if (isFail) {
+                modal.firstElementChild.className = "bg-white rounded-3xl border-4 border-rose-500 shadow-2xl max-w-md w-full p-6 space-y-4 transform transition-all";
+                mIcon.setAttribute('data-lucide', 'alert-triangle');
+                mIcon.parentElement.className = "bg-rose-100 p-2.5 rounded-2xl border border-rose-300 text-rose-600";
+            } else {
+                modal.firstElementChild.className = "bg-white rounded-3xl border-4 border-emerald-500 shadow-2xl max-w-md w-full p-6 space-y-4 transform transition-all";
+                mIcon.setAttribute('data-lucide', 'award');
+                mIcon.parentElement.className = "bg-emerald-100 p-2.5 rounded-2xl border border-emerald-300 text-emerald-600";
+            }
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            playSound('click');
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+
+        // ==========================================
+        // STAGE 1: Hormonal "Sperm Factory" Assembly
+        // ==========================================
+        let selectedP1Card = null;
+        let p1Matches = {}; // key: slot target-id, value: matched card-id
+        let p1Checked = false; // Tracks if we are in feedback mode
+
+        function initPuzzle1() {
+            const cards = document.querySelectorAll('#screen-p1 .card');
+            const dropzones = document.querySelectorAll('#screen-p1 .dropzone');
+
+            // Hybrid Tap-to-Place
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    if (p1Checked) return; // Freeze actions in feedback mode
+                    // Remove selection style from other cards
+                    cards.forEach(c => c.classList.remove('ring-4', 'ring-slate-500', 'bg-slate-100'));
+                    
+                    if (selectedP1Card === card) {
+                        selectedP1Card = null;
+                    } else {
+                        selectedP1Card = card;
+                        card.classList.add('ring-4', 'ring-slate-500', 'bg-slate-100');
+                        playSound('click');
+                    }
+                });
+
+                // Standard Drag events
+                card.addEventListener('dragstart', (e) => {
+                    if (p1Checked) {
+                        e.preventDefault();
+                        return;
+                    }
+                    card.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', card.getAttribute('data-id'));
+                });
+
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('dragging');
+                });
+            });
+
+            dropzones.forEach(zone => {
+                zone.addEventListener('click', () => {
+                    if (p1Checked) return; // Freeze in feedback mode
+                    if (selectedP1Card) {
+                        const cardId = selectedP1Card.getAttribute('data-id');
+                        const targetId = zone.getAttribute('data-target');
+                        
+                        placeCardInSlot(cardId, targetId, zone, selectedP1Card);
+                        selectedP1Card.classList.remove('ring-4', 'ring-slate-500', 'bg-slate-100');
+                        selectedP1Card = null;
+                    }
+                });
+
+                // Standard Drop events
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if (p1Checked) return;
+                    zone.classList.add('drop-target-active');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drop-target-active');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drop-target-active');
+                    if (p1Checked) return;
+                    const cardId = e.dataTransfer.getData('text/plain');
+                    const cardEl = document.querySelector(`#screen-p1 .card[data-id="${cardId}"]`);
+                    const targetId = zone.getAttribute('data-target');
+                    
+                    if (cardEl) {
+                        placeCardInSlot(cardId, targetId, zone, cardEl);
+                    }
+                });
+            });
+        }
+
+        function placeCardInSlot(cardId, targetId, zoneEl, cardEl) {
+            // Remove previous placement if exists
+            const existingInSlot = zoneEl.querySelector('.matched-badge');
+            if (existingInSlot) {
+                const prevCardId = existingInSlot.getAttribute('data-id');
+                // Make previous card visible again in side-deck
+                const prevCardEl = document.querySelector(`#screen-p1 .card[data-id="${prevCardId}"]`);
+                if (prevCardEl) prevCardEl.classList.remove('hidden');
+            }
+
+            // Update state
+            p1Matches[targetId] = cardId;
+            playSound('match');
+
+            // Hide the matched card in card container pool
+            cardEl.classList.add('hidden');
+
+            // Update UI inside the dropzone
+            zoneEl.innerHTML = `
+                <div class="matched-badge w-full h-full bg-slate-700 text-white p-2 rounded-lg text-xs font-black tracking-wide flex items-center justify-between text-center cursor-pointer shadow-inner" data-id="${cardId}">
+                    <span class="truncate pr-1">${cardId}</span>
+                    <i data-lucide="x-circle" class="w-3.5 h-3.5 shrink-0 hover:text-red-200"></i>
+                </div>
+            `;
+            lucide.createIcons();
+
+            // Setup click on x-circle to remove it from slot
+            const closeBtn = zoneEl.querySelector('svg');
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Avoid triggering slot clicks
+                if (p1Checked) return;
+                removeCardFromSlot(targetId, zoneEl, cardId);
+            });
+
+            checkStage1Completion();
+        }
+
+        function removeCardFromSlot(targetId, zoneEl, cardId) {
+            delete p1Matches[targetId];
+            playSound('click');
+
+            // Make card visible again in list
+            const cardEl = document.querySelector(`#screen-p1 .card[data-id="${cardId}"]`);
+            if (cardEl) cardEl.classList.remove('hidden');
+
+            // Revert Dropzone back to placeholder
+            const labelTexts = {
+                'GnRH': '[Place matching label here]',
+                'FSH': '[Label]',
+                'LH': '[Label]',
+                'Sertoli': '[Label]',
+                'ABP': '[Label]',
+                'Leydig': '[Label]',
+                'Testosterone': '[Label]'
+            };
+            zoneEl.innerHTML = `<span class="text-xs text-slate-400 italic pointer-events-none">${labelTexts[targetId]}</span>`;
+            
+            checkStage1Completion();
+        }
+
+        function checkStage1Completion() {
+            const keys = ['GnRH', 'FSH', 'LH', 'Sertoli', 'ABP', 'Leydig', 'Testosterone'];
+            const count = Object.keys(p1Matches).length;
+            const nextBtn = document.getElementById('p1-next-btn');
+
+            if (count === keys.length) {
+                nextBtn.removeAttribute('disabled');
+                nextBtn.className = "px-6 py-2 bg-slate-700 hover:bg-slate-800 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer animate-pulse";
+                document.getElementById('p1-status').textContent = "All components placed! Click 'Check & Progress' to evaluate.";
+                document.getElementById('p1-status').className = "text-sm font-bold text-slate-700";
+            } else {
+                nextBtn.setAttribute('disabled', 'true');
+                nextBtn.className = "px-6 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl transition cursor-not-allowed text-sm flex items-center gap-2";
+                document.getElementById('p1-status').textContent = `Arranged ${count} of 7 labels. Complete all connections to analyze HPG loop.`;
+                document.getElementById('p1-status').className = "text-sm font-semibold text-slate-500";
+            }
+        }
+
+        function completeStage1() {
+            if (p1Checked) {
+                // If already checked and user hits next again (after correcting errors), progress
+                playSound('success');
+                changeScreen('screen-p2');
+                resetPuzzle2();
+                return;
+            }
+
+            // Validate Match Answers
+            let allCorrect = true;
+            const keys = ['GnRH', 'FSH', 'LH', 'Sertoli', 'ABP', 'Leydig', 'Testosterone'];
+            
+            keys.forEach(key => {
+                const zone = document.querySelector(`#screen-p1 .dropzone[data-target="${key}"]`);
+                const matchedBadge = zone.querySelector('.matched-badge');
+                
+                if (p1Matches[key] === key) {
+                    // Correct! Style with thick green border and checkmark
+                    zone.className = "w-full dropzone h-14 border-4 border-emerald-500 rounded-lg flex items-center justify-center bg-emerald-50 transition-all mt-2 relative";
+                    if (matchedBadge) {
+                        matchedBadge.className = "matched-badge w-full h-full bg-emerald-600 text-white p-2 rounded-lg text-xs font-black tracking-wide flex items-center justify-between text-center cursor-default shadow-inner";
+                        matchedBadge.innerHTML += `<i data-lucide="check" class="w-4 h-4 shrink-0 text-white font-bold"></i>`;
+                    }
+                } else {
+                    // Incorrect! Style with thick red border and cross
+                    allCorrect = false;
+                    zone.className = "w-full dropzone h-14 border-4 border-rose-500 rounded-lg flex items-center justify-center bg-rose-50 transition-all mt-2 relative animate-bounce";
+                    if (matchedBadge) {
+                        matchedBadge.className = "matched-badge w-full h-full bg-rose-600 text-white p-2 rounded-lg text-xs font-black tracking-wide flex items-center justify-between text-center cursor-default shadow-inner";
+                        matchedBadge.innerHTML += `<i data-lucide="x" class="w-4 h-4 shrink-0 text-white font-bold"></i>`;
+                    }
+                }
+            });
+
+            lucide.createIcons();
+
+            if (allCorrect) {
+                playSound('success');
+                showModal(" HP Axis Activated!", "<strong>Excellent work!</strong> Every single cell and chemical secretion is placed perfectly inside the HPG feedback loop. Tap down below to move onto Part 2.", false);
+                p1Checked = true;
+                
+                const nextBtn = document.getElementById('p1-next-btn');
+                nextBtn.innerHTML = `<span>Progress to Part 2</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                nextBtn.className = "px-6 py-2 bg-emerald-500 hover:bg-emerald-600 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+                lucide.createIcons();
+            } else {
+                playSound('fail');
+                p1Checked = true;
+                
+                // Show Try Again button modification
+                const nextBtn = document.getElementById('p1-next-btn');
+                nextBtn.innerHTML = `<span>Try Again</span> <i data-lucide="refresh-cw" class="w-4 h-4"></i>`;
+                nextBtn.className = "px-6 py-2 bg-rose-500 hover:bg-rose-600 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+                document.getElementById('p1-status').textContent = "Defects identified inside the hormonal cascade! Incorrect items are highlighted in red.";
+                document.getElementById('p1-status').className = "text-sm font-bold text-rose-600";
+                
+                // Bind custom listener to try again
+                nextBtn.setAttribute('onclick', 'unlockStage1ForEditing()');
+                lucide.createIcons();
+            }
+        }
+
+        function unlockStage1ForEditing() {
+            playSound('click');
+            p1Checked = false;
+
+            // Restore check button
+            const nextBtn = document.getElementById('p1-next-btn');
+            nextBtn.setAttribute('onclick', 'completeStage1()');
+            nextBtn.innerHTML = `<span>Check & Progress</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            nextBtn.className = "px-6 py-2 bg-slate-700 hover:bg-slate-800 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+            
+            // Clean up visual tags of only incorrect answers so students can fix them
+            const keys = ['GnRH', 'FSH', 'LH', 'Sertoli', 'ABP', 'Leydig', 'Testosterone'];
+            keys.forEach(key => {
+                const zone = document.querySelector(`#screen-p1 .dropzone[data-target="${key}"]`);
+                if (p1Matches[key] !== key) {
+                    // It was wrong - remove the card entirely and reset slot
+                    const cardId = p1Matches[key];
+                    if (cardId) {
+                        const cardEl = document.querySelector(`#screen-p1 .card[data-id="${cardId}"]`);
+                        if (cardEl) cardEl.classList.remove('hidden');
+                    }
+                    delete p1Matches[key];
+                    
+                    const labelTexts = {
+                        'GnRH': '[Place matching label here]',
+                        'FSH': '[Label]',
+                        'LH': '[Label]',
+                        'Sertoli': '[Label]',
+                        'ABP': '[Label]',
+                        'Leydig': '[Label]',
+                        'Testosterone': '[Label]'
+                    };
+                    zone.className = "w-full dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all mt-2 relative";
+                    zone.innerHTML = `<span class="text-xs text-slate-400 italic pointer-events-none">${labelTexts[key]}</span>`;
+                } else {
+                    // Correct stay in place but return to standard color scheme
+                    zone.className = "w-full dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all mt-2 relative";
+                    const matchedBadge = zone.querySelector('.matched-badge');
+                    if (matchedBadge) {
+                        matchedBadge.className = "matched-badge w-full h-full bg-slate-700 text-white p-2 rounded-lg text-xs font-black tracking-wide flex items-center justify-between text-center cursor-pointer shadow-inner";
+                        matchedBadge.querySelector('i[data-lucide="check"]').remove();
+                    }
+                }
+            });
+            
+            lucide.createIcons();
+            checkStage1Completion();
+        }
+
+        function resetPuzzle1() {
+            p1Matches = {};
+            selectedP1Card = null;
+            p1Checked = false;
+            playSound('click');
+
+            // Reset action button
+            const nextBtn = document.getElementById('p1-next-btn');
+            nextBtn.setAttribute('onclick', 'completeStage1()');
+            nextBtn.innerHTML = `<span>Check & Progress</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            nextBtn.className = "px-6 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl transition cursor-not-allowed text-sm flex items-center gap-2";
+
+            // Reset all cards in card container pool
+            const cards = document.querySelectorAll('#screen-p1 .card');
+            cards.forEach(card => card.classList.remove('hidden', 'ring-4', 'ring-slate-500', 'bg-slate-100'));
+
+            // Reset all drop zones
+            const dropzones = document.querySelectorAll('#screen-p1 .dropzone');
+            const labelTexts = {
+                'GnRH': '[Place matching label here]',
+                'FSH': '[Label]',
+                'LH': '[Label]',
+                'Sertoli': '[Label]',
+                'ABP': '[Label]',
+                'Leydig': '[Label]',
+                'Testosterone': '[Label]'
+            };
+            dropzones.forEach(zone => {
+                const tid = zone.getAttribute('data-target');
+                zone.className = "w-full dropzone h-14 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50 transition-all mt-2 relative";
+                zone.innerHTML = `<span class="text-xs text-slate-400 italic pointer-events-none">${labelTexts[tid]}</span>`;
+            });
+
+            checkStage1Completion();
+        }
+
+
+        // ==========================================
+        // STAGE 2: The Sperm's Physical Journey
+        // ==========================================
+        const p2Data = [
+            { id: "Urethra", title: "Urethra", desc: "Transports semen and urine out of the body" },
+            { id: "Bulbourethral", title: "Bulbourethral gland", desc: "secretes mucus which neutralises urine and acts as a lubricant" },
+            { id: "Prostate", title: "Prostate", desc: "produces a fluid with citrate and enzymes to break down clots" },
+            { id: "SeminalVesicles", title: "Seminal vesicles", desc: "produces a fluid with sugar, prostaglandins and clotting factors" },
+            { id: "Epididymis", title: "Epididymis", desc: "site of sperm maturation" },
+            { id: "VasDeferens", title: "Vas deferens", desc: "transports sperm from the epididymis" },
+            { id: "EjaculatoryDuct", title: "Ejaculatory duct", desc: "short tube that delivers semen into the urethra" }
+        ];
+
+        let selectedP2Structure = null;
+        let p2Matches = {}; // key: slot id, value: structure id
+        let p2Checked = false;
+
+        function resetPuzzle2() {
+            selectedP2Structure = null;
+            p2Matches = {};
+            p2Checked = false;
+
+            // Reset matching action button
+            const nextBtn = document.getElementById('p2-next-btn');
+            nextBtn.setAttribute('onclick', 'completeStage2()');
+            nextBtn.innerHTML = `<span>Check Pathway</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+
+            // Render Structures left bank randomly
+            const p2StructContainer = document.getElementById('p2-structures');
+            const shuffledStructures = [...p2Data].sort(() => Math.random() - 0.5);
+            
+            p2StructContainer.innerHTML = shuffledStructures.map(s => `
+                <div class="struct-card p-2.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 font-bold text-center text-xs rounded-lg cursor-pointer transition shadow-sm" data-id="${s.id}">
+                    ${s.title}
+                </div>
+            `).join('');
+
+            // Render matching slots randomly
+            const p2SlotContainer = document.getElementById('p2-slots');
+            const shuffledSlots = [...p2Data].sort(() => Math.random() - 0.5);
+
+            p2SlotContainer.innerHTML = shuffledSlots.map(s => `
+                <div class="p2-drop-zone flex flex-col sm:flex-row items-stretch bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl overflow-hidden transition-all duration-300" data-slot-id="${s.id}">
+                    <div class="p-3 flex-grow text-xs text-slate-700">
+                        ${s.desc}
+                    </div>
+                    <div class="w-full sm:w-44 bg-slate-200 border-t sm:border-t-0 sm:border-l border-slate-300 flex items-center justify-center p-1 cursor-pointer hover:bg-slate-300 min-h-[40px] text-center" onclick="clickSlotP2('${s.id}')">
+                        <span class="text-[11px] text-slate-500 italic font-medium">[Click to Match]</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add Event listeners to structures cards
+            document.querySelectorAll('.struct-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    if (p2Checked) return;
+                    document.querySelectorAll('.struct-card').forEach(c => c.classList.remove('ring-4', 'ring-indigo-400', 'bg-indigo-100'));
+                    
+                    if (selectedP2Structure === card) {
+                        selectedP2Structure = null;
+                    } else {
+                        selectedP2Structure = card;
+                        card.classList.add('ring-4', 'ring-indigo-400', 'bg-indigo-100');
+                        playSound('click');
+                    }
+                });
+            });
+
+            checkStage2Completion();
+        }
+
+        function clickSlotP2(slotId) {
+            if (p2Checked) return;
+            if (selectedP2Structure) {
+                const structId = selectedP2Structure.getAttribute('data-id');
+                const titleText = selectedP2Structure.textContent.trim();
+                
+                placeStructureP2(structId, slotId, titleText);
+                selectedP2Structure.classList.remove('ring-4', 'ring-indigo-400', 'bg-indigo-100');
+                selectedP2Structure = null;
+            }
+        }
+
+        function placeStructureP2(structId, slotId, titleText) {
+            const slotEl = document.querySelector(`.p2-drop-zone[data-slot-id="${slotId}"]`);
+            const targetContainer = slotEl.lastElementChild;
+
+            // Make card in left panel hidden
+            const cardEl = document.querySelector(`.struct-card[data-id="${structId}"]`);
+            if (cardEl) cardEl.classList.add('hidden');
+
+            // If slot already had a matching, return it to play
+            if (p2Matches[slotId]) {
+                const prevStructId = p2Matches[slotId];
+                const prevCardEl = document.querySelector(`.struct-card[data-id="${prevStructId}"]`);
+                if (prevCardEl) prevCardEl.classList.remove('hidden');
+            }
+
+            p2Matches[slotId] = structId;
+            playSound('match');
+
+            // Replace slot target text with badge
+            slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-indigo-50 border-2 border-indigo-400 rounded-xl overflow-hidden transition-all duration-300";
+            targetContainer.className = "w-full sm:w-44 bg-indigo-500 text-white flex items-center justify-between px-3 py-2 text-xs font-bold text-center cursor-pointer shadow-inner";
+            targetContainer.innerHTML = `
+                <span class="truncate pr-1">${titleText}</span>
+                <i data-lucide="x-circle" class="w-4 h-4 shrink-0 hover:text-red-200" onclick="removeStructureP2(event, '${slotId}', '${structId}')"></i>
+            `;
+            lucide.createIcons();
+
+            checkStage2Completion();
+        }
+
+        function removeStructureP2(event, slotId, structId) {
+            event.stopPropagation(); // Avoid triggering clickSlotP2
+            if (p2Checked) return;
+            playSound('click');
+
+            delete p2Matches[slotId];
+
+            // Revert Slot look
+            const slotEl = document.querySelector(`.p2-drop-zone[data-slot-id="${slotId}"]`);
+            const targetContainer = slotEl.lastElementChild;
+            
+            slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl overflow-hidden transition-all duration-300";
+            targetContainer.className = "w-full sm:w-44 bg-slate-200 border-t sm:border-t-0 sm:border-l border-slate-300 flex items-center justify-center p-1 cursor-pointer hover:bg-slate-300 min-h-[40px] text-center";
+            targetContainer.innerHTML = `<span class="text-[11px] text-slate-500 italic font-medium">[Click to Match]</span>`;
+
+            // Reshow card
+            const cardEl = document.querySelector(`.struct-card[data-id="${structId}"]`);
+            if (cardEl) cardEl.classList.remove('hidden');
+
+            checkStage2Completion();
+        }
+
+        function checkStage2Completion() {
+            const count = Object.keys(p2Matches).length;
+            const nextBtn = document.getElementById('p2-next-btn');
+
+            if (count === p2Data.length) {
+                nextBtn.removeAttribute('disabled');
+                nextBtn.className = "px-6 py-2 bg-indigo-500 hover:bg-indigo-600 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer animate-pulse";
+                document.getElementById('p2-status').textContent = "All structures matched! Press Check Pathway to evaluate.";
+                document.getElementById('p2-status').className = "text-sm font-bold text-indigo-600";
+            } else {
+                nextBtn.setAttribute('disabled', 'true');
+                nextBtn.className = "px-6 py-2 bg-slate-300 text-slate-500 font-bold rounded-xl transition cursor-not-allowed text-sm flex items-center gap-2";
+                document.getElementById('p2-status').textContent = `Matched ${count} of ${p2Data.length} structures. Complete all connections.`;
+                document.getElementById('p2-status').className = "text-sm font-semibold text-slate-500";
+            }
+        }
+
+        function completeStage2() {
+            let allCorrect = true;
+
+            p2Data.forEach(s => {
+                const slotEl = document.querySelector(`.p2-drop-zone[data-slot-id="${s.id}"]`);
+                const matchedBadge = slotEl.lastElementChild;
+                
+                if (p2Matches[s.id] === s.id) {
+                    // Correct! Tick feedback
+                    slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-emerald-50 border-4 border-emerald-500 rounded-xl overflow-hidden transition-all duration-300";
+                    if (matchedBadge) {
+                        matchedBadge.className = "w-full sm:w-44 bg-emerald-600 text-white flex items-center justify-between px-3 py-2 text-xs font-bold text-center cursor-default shadow-inner";
+                        matchedBadge.innerHTML = `<span class="truncate pr-1">${s.title}</span><i data-lucide="check" class="w-4 h-4 shrink-0 text-white font-bold"></i>`;
+                    }
+                } else {
+                    // Incorrect! Cross feedback
+                    allCorrect = false;
+                    slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-rose-50 border-4 border-rose-500 rounded-xl overflow-hidden transition-all duration-300 animate-bounce";
+                    if (matchedBadge) {
+                        matchedBadge.className = "w-full sm:w-44 bg-rose-600 text-white flex items-center justify-between px-3 py-2 text-xs font-bold text-center cursor-default shadow-inner";
+                        matchedBadge.innerHTML = `<span class="truncate pr-1">${matchedBadge.firstElementChild ? matchedBadge.firstElementChild.textContent : s.title}</span><i data-lucide="x" class="w-4 h-4 shrink-0 text-white font-bold"></i>`;
+                    }
+                }
+            });
+
+            lucide.createIcons();
+
+            if (allCorrect) {
+                playSound('success');
+                showModal("Ejaculation Pathway Open!", "<strong>Fantastic!</strong> Every single reproductive gland and transit duct is matched properly. Let's move onto the Semen Cocktail blender.", false);
+                p2Checked = true;
+                
+                const nextBtn = document.getElementById('p2-next-btn');
+                nextBtn.innerHTML = `<span>Enter Semen Lab</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                nextBtn.className = "px-6 py-2 bg-emerald-500 hover:bg-emerald-600 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+                nextBtn.setAttribute('onclick', 'changeScreen("screen-p3"); updateBlender();');
+                lucide.createIcons();
+            } else {
+                playSound('fail');
+                p2Checked = true;
+                
+                const nextBtn = document.getElementById('p2-next-btn');
+                nextBtn.innerHTML = `<span>Try Again</span> <i data-lucide="refresh-cw" class="w-4 h-4"></i>`;
+                nextBtn.className = "px-6 py-2 bg-rose-500 hover:bg-rose-600 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+                document.getElementById('p2-status').textContent = "Physiological pathway blocks! Correct highlighted connections.";
+                document.getElementById('p2-status').className = "text-sm font-bold text-rose-600";
+                
+                nextBtn.setAttribute('onclick', 'unlockStage2ForEditing()');
+                lucide.createIcons();
+            }
+        }
+
+        function unlockStage2ForEditing() {
+            playSound('click');
+            p2Checked = false;
+
+            const nextBtn = document.getElementById('p2-next-btn');
+            nextBtn.setAttribute('onclick', 'completeStage2()');
+            nextBtn.innerHTML = `<span>Check Pathway</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            nextBtn.className = "px-6 py-2 bg-slate-700 hover:bg-slate-800 active:translate-y-0.5 text-white font-bold rounded-xl transition text-sm flex items-center gap-2 shadow cursor-pointer";
+
+            p2Data.forEach(s => {
+                const slotEl = document.querySelector(`.p2-drop-zone[data-slot-id="${s.id}"]`);
+                const targetContainer = slotEl.lastElementChild;
+
+                if (p2Matches[s.id] !== s.id) {
+                    // Remove wrong matching
+                    const structId = p2Matches[s.id];
+                    if (structId) {
+                        const cardEl = document.querySelector(`.struct-card[data-id="${structId}"]`);
+                        if (cardEl) cardEl.classList.remove('hidden');
+                    }
+                    delete p2Matches[s.id];
+
+                    slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl overflow-hidden transition-all duration-300";
+                    targetContainer.className = "w-full sm:w-44 bg-slate-200 border-t sm:border-t-0 sm:border-l border-slate-300 flex items-center justify-center p-1 cursor-pointer hover:bg-slate-300 min-h-[40px] text-center";
+                    targetContainer.innerHTML = `<span class="text-[11px] text-slate-500 italic font-medium">[Click to Match]</span>`;
+                } else {
+                    // Correct remains, reset styling back to static blue
+                    slotEl.className = "p2-drop-zone flex flex-col sm:flex-row items-stretch bg-indigo-50 border-2 border-indigo-400 rounded-xl overflow-hidden transition-all duration-300";
+                    targetContainer.className = "w-full sm:w-44 bg-indigo-500 text-white flex items-center justify-between px-3 py-2 text-xs font-bold text-center cursor-pointer shadow-inner";
+                    targetContainer.innerHTML = `
+                        <span class="truncate pr-1">${s.title}</span>
+                        <i data-lucide="x-circle" class="w-4 h-4 shrink-0 hover:text-red-200" onclick="removeStructureP2(event, '${s.id}', '${s.id}')"></i>
+                    `;
+                }
+            });
+
+            lucide.createIcons();
+            checkStage2Completion();
+        }
+
+
+        // ==========================================
+        // STAGE 3: The Semen Cocktail Blender
+        // ==========================================
+        function updateBlender() {
+            const sv = parseInt(document.getElementById('slider-sv').value);
+            const prostate = parseInt(document.getElementById('slider-prostate').value);
+            const bulbo = parseInt(document.getElementById('slider-bulbo').value);
+            const epidid = parseInt(document.getElementById('slider-epidid').value);
+
+            // Update Labels
+            document.getElementById('val-sv').textContent = sv + '%';
+            document.getElementById('val-prostate').textContent = prostate + '%';
+            document.getElementById('val-bulbo').textContent = bulbo + '%';
+            document.getElementById('val-epidid').textContent = epidid + '%';
+
+            // Unlocks UI dynamic checking
+            const unlocksSV = document.getElementById('unlocks-sv');
+            if (sv >= 60) {
+                unlocksSV.innerHTML = `
+                    <span class="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="zap" class="w-3 h-3"></i> Fructose (ATP Fuel) Unlocked
+                    </span>
+                    <span class="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="activity" class="w-3 h-3"></i> Prostaglandins Unlocked
+                    </span>
+                    <span class="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="lock" class="w-3 h-3"></i> Fibrinogen (Clot) Unlocked
+                    </span>
+                `;
+            } else {
+                unlocksSV.innerHTML = `<span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: SV Sugar energy, Prostaglandins, Fibrinogen (${sv}/60%)</span>`;
+            }
+
+            // Prostate Unlocks
+            const unlocksP = document.getElementById('unlocks-prostate');
+            if (prostate >= 30) {
+                unlocksP.innerHTML = `
+                    <span class="text-[10px] bg-indigo-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="apple" class="w-3 h-3"></i> Citrate Nutrients Unlocked
+                    </span>
+                    <span class="text-[10px] bg-indigo-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="scissors" class="w-3 h-3"></i> Liquefying Enzymes (PSA) Unlocked
+                    </span>
+                `;
+            } else {
+                unlocksP.innerHTML = `<span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Citric acid & PSA clot dissolver (${prostate}/30%)</span>`;
+            }
+
+            // Bulbourethral Unlocks
+            const unlocksB = document.getElementById('unlocks-bulbo');
+            if (bulbo >= 5) {
+                unlocksB.innerHTML = `
+                    <span class="text-[10px] bg-teal-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="droplet" class="w-3 h-3"></i> Mucus Lubricant Unlocked
+                    </span>
+                    <span class="text-[10px] bg-teal-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="shield" class="w-3 h-3"></i> Acid Neutralizer Unlocked
+                    </span>
+                `;
+            } else {
+                unlocksB.innerHTML = `<span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Mucus buffer & lubricant (${bulbo}/5%)</span>`;
+            }
+
+            // Epididymis Unlocks
+            const unlocksE = document.getElementById('unlocks-epidid');
+            if (epidid >= 5) {
+                unlocksE.innerHTML = `
+                    <span class="text-[10px] bg-rose-500 text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                        <i data-lucide="award" class="w-3 h-3"></i> Motile Sperm Cells Active
+                    </span>
+                `;
+            } else {
+                unlocksE.innerHTML = `<span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded italic">Locked: Mature spermatozoa (${epidid}/5%)</span>`;
+            }
+
+            lucide.createIcons();
+
+            // Total volume check
+            const total = sv + prostate + bulbo + epidid;
+            const totalDisplay = document.getElementById('total-vol-display');
+            totalDisplay.textContent = total + '% / 100%';
+            
+            if (total === 100) {
+                totalDisplay.className = "text-2xl font-black text-emerald-400";
+            } else if (total > 100) {
+                totalDisplay.className = "text-2xl font-black text-rose-500 animate-pulse";
+            } else {
+                totalDisplay.className = "text-2xl font-black text-white";
+            }
+
+            // Set height percentages of fluid visualization
+            document.getElementById('fluid-sv').style.height = (sv * 2.4) + 'px';
+            document.getElementById('fluid-prostate').style.height = (prostate * 2.4) + 'px';
+            document.getElementById('fluid-bulbo').style.height = (bulbo * 2.4) + 'px';
+            document.getElementById('fluid-epidid').style.height = (epidid * 2.4) + 'px';
+
+            // Real-time text diagnostic
+            const diagText = document.getElementById('diagnostic-text');
+            if (total === 100) {
+                diagText.innerHTML = "Total volume is mathematically perfect (100%). Run biochemical assessment to verify component parameters!";
+                document.getElementById('blender-diagnostic').className = "bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-4 text-xs space-y-1 text-emerald-900";
+            } else if (total > 100) {
+                diagText.innerHTML = `Volume exceeds 100% (currently ${total}%). Reduce gland outputs to avoid hyper-viscosity and ejaculation pathway blockage!`;
+                document.getElementById('blender-diagnostic').className = "bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-xs space-y-1 text-rose-900";
+            } else {
+                diagText.innerHTML = `Fluid levels are insufficient (currently ${total}%). Allocate more secretions from SV (ideal: 60%), Prostate (ideal: 30%), Bulbo (ideal: 5%), or Epididymis (ideal: 5%).`;
+                document.getElementById('blender-diagnostic').className = "bg-sky-50 border-2 border-sky-300 rounded-2xl p-4 text-xs space-y-1 text-sky-900";
+            }
+        }
+
+        function testCocktail() {
+            const sv = parseInt(document.getElementById('slider-sv').value);
+            const prostate = parseInt(document.getElementById('slider-prostate').value);
+            const bulbo = parseInt(document.getElementById('slider-bulbo').value);
+            const epidid = parseInt(document.getElementById('slider-epidid').value);
+            const total = sv + prostate + bulbo + epidid;
+
+            if (total !== 100) {
+                showModal("Volume Mismatch", `Your total ejaculate volume is <strong>${total}%</strong>. To execute successful ejaculation under sympathetic pathways, the final semen mixture must occupy exactly <strong>100%</strong> of the clinical threshold!`, true);
+                return;
+            }
+
+            // Specific Fail States from prompt rules
+            if (sv < 60) {
+                showModal("Sperm Out of Fuel!", "<strong>Sperm ran out of ATP energy in the epididymis!</strong> Seminal vesicle fluids are too low, leaving the sperm completely starved of fructose sugar. Reset blender parameters.", true);
+                return;
+            }
+
+            if (prostate > 30) {
+                showModal("Excessive Prostate Fluid!", "<strong>Improper acidity and viscosity!</strong> The prostate volume is too high, leading to excessive clotting enzyme density and citrate imbalances, reducing fertilization success in the acidic female tract.", true);
+                return;
+            }
+
+            if (prostate < 30) {
+                showModal("Insufficient Prostate Enzymes!", "Without adequate prostate fluid (30%), semen cannot properly liquefy its post-ejaculatory clot. The sperm cells remain locked inside a sticky fibrinogen matrix!", true);
+                return;
+            }
+
+            if (bulbo !== 5 || epidid !== 5) {
+                showModal("Improper Glandular Ratios!", "Your accessory ratios are off! Ensure the Bulbourethral gland contributes 5% (to neutralize urine) and the Epididymis contributes 5% (the optimal sperm density).", true);
+                return;
+            }
+
+            // Success Condition unlocked!
+            playSound('success');
+            changeScreen('screen-unlocked');
+        }
+
+        function resetPuzzle3() {
+            playSound('click');
+            document.getElementById('slider-sv').value = 0;
+            document.getElementById('slider-prostate').value = 0;
+            document.getElementById('slider-bulbo').value = 0;
+            document.getElementById('slider-epidid').value = 0;
+            updateBlender();
+        }
+
+
+        // ==========================================
+        // GAME LIFECYCLE RESTART
+        // ==========================================
+        function restartGame() {
+            resetPuzzle1();
+            resetPuzzle2();
+            resetPuzzle3();
+            changeScreen('screen-welcome');
+        }
+
+        // Initialize assets on page load
+        window.onload = function() {
+            lucide.createIcons();
+            initPuzzle1();
+        }
+    </script>
+</body>
+</html>
